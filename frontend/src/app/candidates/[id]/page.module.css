@@ -1,0 +1,187 @@
+.page {
+  padding: var(--space-8);
+  min-height: 100vh;
+}
+
+/* ═══ Header ═══ */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-6);
+}
+.back {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  display: block;
+  margin-bottom: var(--space-2);
+}
+.back:hover { color: var(--text-secondary); }
+.name {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.role {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.btnDelete {
+  font-size: 0.8rem;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.1s, color 0.1s;
+}
+.btnDelete:hover:not(:disabled) {
+  border-color: var(--error);
+  color: var(--error);
+}
+.btnDelete:disabled { opacity: 0.5; cursor: default; }
+
+/* ═══ Two-column layout ═══ */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.chatCol {
+  position: sticky;
+  top: var(--space-6);
+  height: calc(100vh - 160px);
+}
+
+/* ═══ CV detail ═══ */
+.cvCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+.row {
+  display: flex;
+  gap: var(--space-4);
+  align-items: baseline;
+}
+.rowLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+.rowValue {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.section {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.sectionTitle {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.summary {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+.tag {
+  font-size: 0.75rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 99px;
+  color: var(--text-secondary);
+}
+.tagSoft {
+  font-size: 0.75rem;
+  border: 1px solid var(--border-strong);
+  padding: 2px 8px;
+  border-radius: 99px;
+  color: var(--text-muted);
+}
+
+.job {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.job:last-child { border-bottom: none; }
+.jobMeta {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.jobTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.jobCompany {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.jobDate {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  margin-left: auto;
+}
+.bullets {
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.bullets li {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.eduField {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.projUrl {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+.projUrl:hover { text-decoration: underline; }
+
+.muted { color: var(--text-muted); font-size: 0.875rem; }
+.error { color: var(--error); font-size: 0.875rem; }

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem \"D:\\\\Dev\\\\Cvault\\\\backend\\\\src\\\\db\", \"D:\\\\Dev\\\\Cvault\\\\backend\\\\src\\\\harness\" -Recurse | Where-Object { -not $_.PSIsContainer } | Select-Object FullName)",
+      "PowerShell(Get-ChildItem \"D:\\\\Dev\\\\Cvault\\\\frontend\\\\src\\\\app\\\\candidates\", \"D:\\\\Dev\\\\Cvault\\\\frontend\\\\src\\\\app\\\\pipeline\", \"D:\\\\Dev\\\\Cvault\\\\frontend\\\\src\\\\components\\\\candidates\" -Recurse | Where-Object { -not $_.PSIsContainer } | Select-Object FullName)",
+      "PowerShell(Get-ChildItem \"D:\\\\Dev\\\\Cvault\\\\backend\\\\src\" -Recurse -File | Select-Object -ExpandProperty FullName | Where-Object { $_ -notmatch \"__pycache__\" })",
+      "Bash(Get-ChildItem -Path \"D:\\\\Dev\\\\Cvault\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "PowerShell(cd \"D:\\\\Dev\\\\Cvault\"; Get-ChildItem -Path \"backend\\\\src\" -Recurse -File | Where-Object {$_.Extension -eq \".py\"} | Select-Object -ExpandProperty FullName | Sort-Object)",
+      "Bash(uv add *)"
+    ]
+  }
+}

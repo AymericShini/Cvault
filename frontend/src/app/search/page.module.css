@@ -1,0 +1,209 @@
+/* ═══ Search page ═══ */
+.page {
+  padding: var(--space-8);
+  max-width: 760px;
+}
+
+.header {
+  margin-bottom: var(--space-6);
+}
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* ═══ Form ═══ */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+.textarea {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  resize: vertical;
+  line-height: 1.55;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.topNGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.topNLabel {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.topNBtn {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.topNBtn:hover { border-color: var(--accent); color: var(--accent); }
+.topNBtnActive {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.submitBtn {
+  padding: var(--space-2) var(--space-6);
+  background: var(--accent);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.submitBtn:hover:not(:disabled) { background: var(--accent-hover); }
+.submitBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ═══ States ═══ */
+.error {
+  color: var(--error);
+  font-size: 0.875rem;
+}
+.emptyState {
+  padding: var(--space-10) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.emptyTitle { font-size: 0.9rem; font-weight: 500; }
+.emptySub   { font-size: 0.85rem; color: var(--text-secondary); }
+.link { color: var(--accent); text-decoration: none; }
+.link:hover { text-decoration: underline; }
+
+/* ═══ Results ═══ */
+.results { display: flex; flex-direction: column; gap: var(--space-3); }
+.resultsMeta {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+.list { display: flex; flex-direction: column; gap: var(--space-2); }
+
+/* ═══ Match card ═══ */
+.card {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.cardRank {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  padding-top: 2px;
+  min-width: 24px;
+}
+
+.cardBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.cardTop {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.cardName {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+.cardRole {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.cardExcerpt {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.cardScore {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+  min-width: 64px;
+}
+.scoreValue {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.scoreLabel {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: -4px;
+}
+.scoreBar {
+  width: 56px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.scoreFill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}

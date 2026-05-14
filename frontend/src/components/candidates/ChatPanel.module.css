@@ -1,0 +1,105 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.thread {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  padding: var(--space-3) 0;
+}
+
+.bubble {
+  max-width: 88%;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.user {
+  align-self: flex-end;
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  border-bottom-right-radius: var(--radius-sm);
+}
+.assistant {
+  align-self: flex-start;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-bottom-left-radius: var(--radius-sm);
+}
+.thinking {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.error {
+  font-size: 0.8rem;
+  color: var(--error);
+}
+
+/* ═══ Input form ═══ */
+.form {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--border);
+}
+.input {
+  flex: 1;
+  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.1s;
+}
+.input:focus { border-color: var(--border-strong); }
+.input::placeholder { color: var(--text-muted); }
+.input:disabled { opacity: 0.6; }
+
+.send {
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  padding: var(--space-2) var(--space-4);
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: opacity 0.1s;
+}
+.send:hover:not(:disabled) { opacity: 0.8; }
+.send:disabled { opacity: 0.35; cursor: default; }

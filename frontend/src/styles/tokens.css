@@ -1,0 +1,61 @@
+/* ═══════════════════════════════════════════════════════════
+   Design Tokens — single source of truth for all visual values
+   Import in globals.css, reference everywhere via var()
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  /* Palette */
+  --bg:           #F8F7F4;
+  --bg-subtle:    #F0EEE9;
+  --bg-raised:    #FFFFFF;
+  --border:       #E5E3DF;
+  --border-strong:#CCCAC5;
+
+  /* Text */
+  --text-primary:   #1A1A1A;
+  --text-secondary: #6B6860;
+  --text-muted:     #9B9890;
+  --text-inverse:   #FFFFFF;
+
+  /* Accent */
+  --accent:       #2A7C6F;
+  --accent-hover: #236860;
+  --accent-light: #E8F4F2;
+  --accent-text:  #1A4F47;
+
+  /* Status */
+  --success:      #2D6A4F;
+  --success-bg:   #EAF5EE;
+  --warning:      #8B5E1A;
+  --warning-bg:   #FEF6E4;
+  --error:        #C0392B;
+  --error-bg:     #FDEDEB;
+  --running:      #1A5F8A;
+  --running-bg:   #E8F3FB;
+
+  /* Typography */
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'Fira Code', monospace;
+
+  /* Spacing */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radius */
+  --radius-sm: 3px;
+  --radius:    5px;
+  --radius-lg: 8px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow:    0 1px 4px rgba(0,0,0,0.10);
+
+  /* Sidebar */
+  --sidebar-width: 220px;
+}

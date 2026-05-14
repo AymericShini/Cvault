@@ -1,0 +1,145 @@
+/* ═══ Jobs page ═══ */
+.page {
+  padding: var(--space-8);
+  max-width: 720px;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+.title { font-size: 1.25rem; font-weight: 600; }
+.count {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+/* ═══ Create form ═══ */
+.formSection {
+  margin-bottom: var(--space-8);
+  padding: var(--space-5);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.sectionTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-4);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.input,
+.textarea {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.input::placeholder,
+.textarea::placeholder { color: var(--text-muted); }
+.textarea { resize: vertical; line-height: 1.55; }
+
+.saveBtn {
+  align-self: flex-end;
+  padding: var(--space-2) var(--space-5);
+  background: var(--accent);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.saveBtn:hover:not(:disabled) { background: var(--accent-hover); }
+.saveBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ═══ States ═══ */
+.muted { font-size: 0.875rem; color: var(--text-muted); }
+.error { font-size: 0.875rem; color: var(--error); }
+
+/* ═══ Job cards ═══ */
+.list { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.card {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.cardBody { flex: 1; display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.cardTitle { font-weight: 600; font-size: 0.9rem; }
+.cardDesc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.cardDate {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+.cardActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.searchBtn {
+  padding: var(--space-2) var(--space-3);
+  background: var(--accent);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.searchBtn:hover { background: var(--accent-hover); }
+
+.deleteBtn {
+  padding: var(--space-1) var(--space-3);
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.deleteBtn:hover { color: var(--error); border-color: var(--error); }
