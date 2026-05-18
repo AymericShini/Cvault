@@ -28,13 +28,29 @@ CREATE TABLE IF NOT EXISTS jobs (
     description TEXT NOT NULL,
     created_at  TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS agent_runs (
+    id           TEXT PRIMARY KEY,
+    task         TEXT NOT NULL,
+    status       TEXT NOT NULL DEFAULT 'running',
+    events       TEXT NOT NULL DEFAULT '[]',
+    answer       TEXT,
+    tokens_used  INTEGER,
+    created_at   TEXT NOT NULL,
+    completed_at TEXT
+);
 """
 
 
 async def init_db() -> None:
     async with aiosqlite.connect(DB_PATH) as db:
         await db.executescript(_SCHEMA)
-        await db.commit()
+        # Migration: add tokens_used to existing agent_runs tables created before this column
+        try:
+            await db.execute("ALTER TABLE agent_runs ADD COLUMN tokens_used INTEGER")
+            await db.commit()
+        except Exception:
+            pass  # Column already exists
 
 
 @asynccontextmanager

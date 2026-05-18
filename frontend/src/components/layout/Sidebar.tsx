@@ -16,7 +16,7 @@ const NAV: NavItem[] = [
   { label: 'Candidates', href: '/candidates', phase: 2, active: true  },
   { label: 'Search',     href: '/search',    phase: 3, active: true  },
   { label: 'Jobs',       href: '/jobs',      phase: 3, active: true  },
-  { label: 'Match',      href: '/match',     phase: 4, active: false },
+  { label: 'Agent',      href: '/agent',     phase: 4, active: true  },
   { label: 'Pipeline',   href: '/pipeline',  phase: 2, active: true  },
 ]
 
@@ -56,8 +56,8 @@ export default function Sidebar() {
       </nav>
 
       <div className={styles.footer}>
-        <span className={styles.phase}>Phase 3</span>
-        <span className={styles.footerSub}>RAG / Vector Search</span>
+        <span className={styles.phase}>Phase 4</span>
+        <span className={styles.footerSub}>Agentic Workflow</span>
       </div>
     </aside>
   )

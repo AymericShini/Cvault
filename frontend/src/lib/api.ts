@@ -1,4 +1,6 @@
 import type {
+  AgentRunDetail,
+  AgentRunListItem,
   CandidateListItem,
   CandidateRecord,
   ChatRequest,
@@ -97,4 +99,18 @@ export async function deleteJob(id: string): Promise<void> {
     const err = await res.json().catch(() => ({ detail: res.statusText }))
     throw new Error(err.detail ?? res.statusText)
   }
+}
+
+// ─── Agent (Phase 4) ─────────────────────────────────────────────────────────
+
+export function getAgentRunUrl(): string {
+  return `${API_URL}/api/agent/run`
+}
+
+export async function getAgentHistory(): Promise<AgentRunListItem[]> {
+  return _json(await fetch(`${API_URL}/api/agent/history`))
+}
+
+export async function getAgentRun(runId: string): Promise<AgentRunDetail> {
+  return _json(await fetch(`${API_URL}/api/agent/history/${runId}`))
 }

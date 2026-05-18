@@ -165,3 +165,25 @@ class SearchRequest(BaseModel):
 
 class SearchResponse(BaseModel):
     results: list[CandidateMatch]
+
+
+# ─── Phase 4 models ──────────────────────────────────────────────────────────
+
+class AgentRunRequest(BaseModel):
+    task: str
+
+
+# ─── Phase 5 models ──────────────────────────────────────────────────────────
+
+class AgentRunListItem(BaseModel):
+    id: str
+    task: str
+    status: str
+    answer: str | None = None
+    tokens_used: int | None = None
+    created_at: str
+    completed_at: str | None = None
+
+
+class AgentRunDetail(AgentRunListItem):
+    events: list[dict]

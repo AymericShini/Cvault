@@ -26,10 +26,19 @@ from src.db.candidates import (
     list_jobs as db_list_jobs,
     delete_job as db_delete_job,
 )
+from src.db.agent_runs import (
+    create_run as db_create_run,
+    complete_run as db_complete_run,
+    list_runs as db_list_runs,
+    get_run as db_get_run,
+)
 from src.extractors.pdf import extract_text, ExtractionError
 from src.harness import chat as chat_harness
 from src.harness import pipeline as pipeline_harness
 from src.models.cv import (
+    AgentRunRequest,
+    AgentRunDetail,
+    AgentRunListItem,
     CandidateListItem,
     CandidateMatch,
     CandidateRecord,
@@ -43,6 +52,7 @@ from src.models.cv import (
     SearchResponse,
     UploadResponse,
 )
+from src.agent import runner as agent_runner
 from src.parsers.cv_parser import parse_cv, ParseError
 from src.parsers.prompts import build_user_prompt, SYSTEM_PROMPT, MAX_CV_CHARS
 
@@ -324,8 +334,65 @@ async def remove_job(job_id: str):
         raise HTTPException(404, "Job not found.")
 
 
+# ─── Agent (Phase 4) ─────────────────────────────────────────────────────────
+
+@router.post("/agent/run")
+async def run_agent(req: AgentRunRequest):
+    """
+    Stream the agent's ReAct loop as SSE.
+
+    Each event is one step in the reasoning trace:
+      thought | tool_call | tool_result | answer | error
+
+    The full trace is persisted to SQLite when the stream completes.
+    """
+    run_id = str(uuid4())
+    await db_create_run(run_id=run_id, task=req.task)
+
+    async def generate():
+        collected: list[dict] = []
+        final_answer: str | None = None
+        final_status = "error"
+        total_tokens = 0
+        try:
+            async for event in agent_runner.run(req.task):
+                collected.append(event)
+                if event.get("type") == "answer":
+                    final_answer = event.get("content")
+                    final_status = "completed"
+                elif event.get("type") == "token_usage":
+                    total_tokens += event.get("total_tokens", 0)
+                yield _sse(event)
+        finally:
+            await db_complete_run(run_id, collected, final_answer, final_status, total_tokens or None)
+
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "X-Agent-Run-Id": run_id,
+        },
+    )
+
+
+@router.get("/agent/history", response_model=list[AgentRunListItem])
+async def get_agent_history():
+    rows = await db_list_runs(limit=50)
+    return [AgentRunListItem(**row) for row in rows]
+
+
+@router.get("/agent/history/{run_id}", response_model=AgentRunDetail)
+async def get_agent_run(run_id: str):
+    row = await db_get_run(run_id)
+    if not row:
+        raise HTTPException(404, "Agent run not found.")
+    return AgentRunDetail(**{**row, "events": json.loads(row["events"])})
+
+
 # ─── Health ───────────────────────────────────────────────────────────────────
 
 @router.get("/health")
 async def health():
-    return {"status": "ok", "phase": 3, "active_jobs": len(_jobs)}
+    return {"status": "ok", "phase": 4, "active_jobs": len(_jobs)}

@@ -157,3 +157,37 @@ export interface SearchRequest {
 export interface SearchResponse {
   results: CandidateMatch[];
 }
+
+// ─── Phase 4 types ───────────────────────────────────────────────────────────
+
+export type AgentEventType = 'thought' | 'tool_call' | 'tool_result' | 'token_usage' | 'answer' | 'error'
+
+export interface AgentEvent {
+  type: AgentEventType
+  content?: string
+  name?: string
+  args?: Record<string, unknown>
+  result?: unknown
+  call_id?: string
+  prompt_tokens?: number
+  completion_tokens?: number
+  total_tokens?: number
+}
+
+// ─── Phase 5 types ───────────────────────────────────────────────────────────
+
+export type AgentRunStatus = 'running' | 'completed' | 'error'
+
+export interface AgentRunListItem {
+  id: string
+  task: string
+  status: AgentRunStatus
+  answer: string | null
+  tokens_used: number | null
+  created_at: string
+  completed_at: string | null
+}
+
+export interface AgentRunDetail extends AgentRunListItem {
+  events: AgentEvent[]
+}
