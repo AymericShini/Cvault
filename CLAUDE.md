@@ -9,9 +9,9 @@ CVault is an AI-powered CV reader & parser. It is **primarily a learning vehicle
 | Phase | Pillar | Status |
 |-------|--------|--------|
 | 1 | Context Engineering | ✅ Complete |
-| 2 | Harness / Orchestration (LlamaIndex) | ⏭️ Next |
-| 3 | RAG (ChromaDB + sentence-transformers) | Pending |
-| 4 | Agentic Workflow | Pending |
+| 2 | Harness / Orchestration (LlamaIndex) | ✅ Complete |
+| 3 | RAG (ChromaDB + sentence-transformers) | ✅ Complete |
+| 4 | Agentic Workflow | ⏭️ In Progress |
 
 **Do not start coding a new phase without:** (1) a prerequisites check, (2) a design discussion, (3) user confirmation the previous phase works on their machine.
 
@@ -115,15 +115,9 @@ GET /api/health → { status, phase, active_jobs }
 - BEM-ish naming: `.card`, `.cardHeader`, `.cardHeaderTitle`
 - Section dividers: `/* ═══ Section ═══ */`
 
-## Phase 2 — What's Next
+## Phase 4 — Current
 
-LlamaIndex as orchestration harness + candidate database + conversational Q&A.
-
-**Concepts to teach:** `IngestionPipeline`, `ChatEngine` with `ConversationBufferMemory`, SQLite persistence, auto-repair output parsers.
-
-**New features:** SQLite CV storage, `/candidates` list + detail pages, "Ask AI about this CV" chat panel, `/pipeline` live monitor page.
-
-**Pending decisions to discuss first:** Keep Groq or add Anthropic for Phase 2 chat? SQLite directly or via SQLAlchemy?
+Agentic Workflow. New files: `backend/src/agent/`, `backend/src/db/agent_runs.py`, `frontend/src/app/agent/`.
 
 ## Known Tech Debt
 
