@@ -22,9 +22,10 @@ from pathlib import Path
 
 from sentence_transformers import SentenceTransformer
 
+import os
 import chromadb
 
-CHROMA_DIR = Path(__file__).parent.parent.parent / "chroma_db"
+CHROMA_DIR = Path(os.getenv("CHROMA_DIR", str(Path(__file__).parent.parent.parent / "chroma_db")))
 _COLLECTION_NAME = "cv_chunks"
 _CHUNK_WORDS = 150   # max words per chunk
 _CHUNK_OVERLAP = 30  # words of overlap between consecutive chunks

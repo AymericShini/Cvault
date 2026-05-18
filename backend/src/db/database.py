@@ -5,12 +5,13 @@ Two responsibilities:
   init_db()  — called once at startup to create tables if they don't exist
   get_db()   — async context manager that yields a live connection per call
 """
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 import aiosqlite
 
-DB_PATH = Path(__file__).parent.parent.parent / "cvault.db"
+DB_PATH = Path(os.getenv("DB_PATH", str(Path(__file__).parent.parent.parent / "cvault.db")))
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS candidates (
