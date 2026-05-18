@@ -15,6 +15,7 @@ dependencies = [
     "llama-index-llms-groq>=0.3.0",
     "aiosqlite>=0.20.0",
     "chromadb>=0.4.0",
+    "torch",
     "sentence-transformers>=2.7.0",
 ]
 
