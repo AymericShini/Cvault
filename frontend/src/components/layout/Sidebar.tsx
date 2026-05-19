@@ -20,10 +20,20 @@ const NAV: NavItem[] = [
   { label: 'Pipeline',   href: '/pipeline',  phase: 2, active: true  },
 ]
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname()
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
+      <button className={styles.closeBtn} onClick={onClose} aria-label="Close navigation">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      </button>
       <div className={styles.logo}>
         <span className={styles.logoMark}>CV</span>
         <span className={styles.logoWord}>ault</span>

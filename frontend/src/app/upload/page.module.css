@@ -46,3 +46,7 @@
   letter-spacing: 0.05em;
   margin-bottom: var(--space-1);
 }
+
+@media (max-width: 480px) {
+  .page { padding: var(--space-4); }
+}

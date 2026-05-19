@@ -342,3 +342,8 @@
   margin: 0;
   line-height: 1.7;
 }
+
+@media (max-width: 768px) {
+  .page { grid-template-columns: 1fr; padding: var(--space-5) var(--space-4); }
+  .historySidebar { display: none; }
+}

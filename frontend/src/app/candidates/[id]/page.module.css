@@ -185,3 +185,10 @@
 
 .muted { color: var(--text-muted); font-size: 0.875rem; }
 .error { color: var(--error); font-size: 0.875rem; }
+
+@media (max-width: 768px) {
+  .page { padding: var(--space-5); }
+  .header { flex-direction: column; gap: var(--space-3); align-items: flex-start; }
+  .layout { grid-template-columns: 1fr; }
+  .chatCol { position: static; height: auto; }
+}

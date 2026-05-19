@@ -346,3 +346,17 @@
   border-radius: var(--radius);
   line-height: 1.6;
 }
+
+@media (max-width: 768px) {
+  .wrapper { grid-template-columns: 1fr; }
+  .pdfPane { display: none; }
+  .grid { grid-template-columns: 1fr; }
+  .cardHeader { flex-direction: column; gap: var(--space-3); }
+  .actions { flex-wrap: wrap; }
+  .llmFooter { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  .col { padding: var(--space-4); }
+  .timeline, .projects { padding: var(--space-4); }
+}

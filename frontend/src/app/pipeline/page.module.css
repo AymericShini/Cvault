@@ -84,3 +84,9 @@
 .link:hover { text-decoration: underline; }
 
 .muted { color: var(--text-muted); font-size: 0.875rem; }
+
+@media (max-width: 768px) {
+  .page { padding: var(--space-5); }
+  .stats { flex-wrap: wrap; }
+  .stat { flex: 1 1 calc(50% - var(--space-2)); }
+}

@@ -143,3 +143,12 @@
   transition: color 0.15s, border-color 0.15s;
 }
 .deleteBtn:hover { color: var(--error); border-color: var(--error); }
+
+@media (max-width: 768px) {
+  .card { flex-direction: column; }
+  .cardActions { flex-direction: row; align-items: center; justify-content: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .page { padding: var(--space-4); }
+}

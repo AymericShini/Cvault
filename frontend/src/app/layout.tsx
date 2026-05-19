@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Sidebar from '@/components/layout/Sidebar'
-import styles from './layout.module.css'
+import Shell from '@/components/layout/Shell'
 
 export const metadata: Metadata = {
   title: 'CVault — AI Candidate Intelligence',
@@ -12,10 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <div className={styles.shell}>
-          <Sidebar />
-          <main className={styles.main}>{children}</main>
-        </div>
+        <Shell>{children}</Shell>
       </body>
     </html>
   )
