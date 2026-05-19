@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { sendChatMessage } from '@/lib/api'
 import type { ChatMessage } from '@/lib/types'
 import styles from './ChatPanel.module.css'
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function ChatPanel({ candidateId }: Props) {
+  const t = useTranslations('chat')
   const [history, setHistory] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -34,7 +36,7 @@ export default function ChatPanel({ candidateId }: Props) {
       const res = await sendChatMessage(candidateId, { history, message })
       setHistory((h) => [...h, { role: 'assistant', content: res.response }])
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Request failed')
+      setError(e instanceof Error ? e.message : t('error'))
     } finally {
       setLoading(false)
     }
@@ -42,14 +44,11 @@ export default function ChatPanel({ candidateId }: Props) {
 
   return (
     <div className={styles.panel}>
-      <p className={styles.title}>Ask AI about this candidate</p>
+      <p className={styles.title}>{t('title')}</p>
 
       <div className={styles.thread}>
         {history.length === 0 && (
-          <p className={styles.hint}>
-            Ask anything — "What's their main tech stack?", "Are they senior enough for a
-            lead role?", "Summarise their experience in two sentences."
-          </p>
+          <p className={styles.hint}>{t('hint')}</p>
         )}
         {history.map((msg, i) => (
           <div
@@ -61,7 +60,7 @@ export default function ChatPanel({ candidateId }: Props) {
         ))}
         {loading && (
           <div className={`${styles.bubble} ${styles.assistant} ${styles.thinking}`}>
-            Thinking…
+            {t('thinking')}
           </div>
         )}
         {error && <p className={styles.error}>{error}</p>}
@@ -73,11 +72,11 @@ export default function ChatPanel({ candidateId }: Props) {
           className={styles.input}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask a question…"
+          placeholder={t('placeholder')}
           disabled={loading}
         />
         <button className={styles.send} type="submit" disabled={loading || !input.trim()}>
-          Send
+          {t('send')}
         </button>
       </form>
     </div>

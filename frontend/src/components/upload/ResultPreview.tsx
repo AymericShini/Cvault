@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import type { LlmStats, ParsedCV, Education } from '@/lib/types'
 import styles from './ResultPreview.module.css'
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function ResultPreview({ result, filename, file, onReset, llmStats }: Props) {
+  const t = useTranslations('result')
   const [showJson, setShowJson] = useState(false)
   const { personal_info: pi, skills, work_experience, confidence_scores: cs, education, certifications } = result
 
@@ -26,7 +28,7 @@ export default function ResultPreview({ result, filename, file, onReset, llmStat
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>
-            <h2 className={styles.name}>{pi.full_name ?? 'Unknown'}</h2>
+            <h2 className={styles.name}>{pi.full_name ?? t('name')}</h2>
             {work_experience[0] && (
               <p className={styles.role}>{work_experience[0].title} · {work_experience[0].company}</p>
             )}
@@ -34,10 +36,10 @@ export default function ResultPreview({ result, filename, file, onReset, llmStat
           </div>
           <div className={styles.actions}>
             <button className={styles.btnSecondary} onClick={() => setShowJson((v) => !v)}>
-              {showJson ? 'Hide JSON' : 'View JSON'}
+              {showJson ? t('hideJson') : t('viewJson')}
             </button>
             <button className={styles.btnPrimary} onClick={onReset}>
-              Parse another
+              {t('parseAnother')}
             </button>
           </div>
         </div>
@@ -45,22 +47,22 @@ export default function ResultPreview({ result, filename, file, onReset, llmStat
         <div className={styles.grid}>
           {/* Left column */}
           <div className={styles.col}>
-            {pi.email && <InfoRow label="Email" value={pi.email} />}
-            {pi.phone && <InfoRow label="Phone" value={pi.phone} />}
+            {pi.email && <InfoRow label={t('email')} value={pi.email} />}
+            {pi.phone && <InfoRow label={t('phone')} value={pi.phone} />}
             {result.total_experience_years != null && (
-              <InfoRow label="Experience" value={`${result.total_experience_years} years`} />
+              <InfoRow label={t('experience')} value={`${result.total_experience_years} years`} />
             )}
-            {topDegree && <InfoRow label="Education" value={topDegree} />}
+            {topDegree && <InfoRow label={t('education')} value={topDegree} />}
             {result.spoken_languages.length > 0 && (
               <InfoRow
-                label="Languages"
+                label={t('languages')}
                 value={result.spoken_languages.map((l) => `${l.language} (${l.level})`).join(', ')}
               />
             )}
 
             {hardSkills.length > 0 && (
               <div className={styles.skillsBlock}>
-                <span className={styles.rowLabel}>Hard skills</span>
+                <span className={styles.rowLabel}>{t('hardSkills')}</span>
                 <div className={styles.tags}>
                   {hardSkills.slice(0, 14).map((s) => (
                     <span key={s} className={styles.tag}>{s}</span>
@@ -71,7 +73,7 @@ export default function ResultPreview({ result, filename, file, onReset, llmStat
 
             {skills.soft_skills.length > 0 && (
               <div className={styles.skillsBlock}>
-                <span className={styles.rowLabel}>Soft skills</span>
+                <span className={styles.rowLabel}>{t('softSkills')}</span>
                 <div className={styles.tags}>
                   {skills.soft_skills.map((s) => (
                     <span key={s} className={styles.tagSoft}>{s}</span>
@@ -82,7 +84,7 @@ export default function ResultPreview({ result, filename, file, onReset, llmStat
 
             {certifications.length > 0 && (
               <div className={styles.skillsBlock}>
-                <span className={styles.rowLabel}>Certifications</span>
+                <span className={styles.rowLabel}>{t('certifications')}</span>
                 <div className={styles.tags}>
                   {certifications.map((c) => (
                     <span key={c} className={styles.tag}>{c}</span>
@@ -94,23 +96,21 @@ export default function ResultPreview({ result, filename, file, onReset, llmStat
 
           {/* Right column — Confidence scores */}
           <div className={styles.col}>
-            <p className={styles.sectionTitle}>Confidence scores</p>
+            <p className={styles.sectionTitle}>{t('confidenceScores')}</p>
             <div className={styles.scores}>
-              <ScoreBar label="Name" value={cs.full_name} />
-              <ScoreBar label="Email" value={cs.email} />
-              <ScoreBar label="Experience" value={cs.total_experience_years} />
+              <ScoreBar label={t('name')} value={cs.full_name} />
+              <ScoreBar label={t('email')} value={cs.email} />
+              <ScoreBar label={t('experience')} value={cs.total_experience_years} />
               <ScoreBar label="Skills" value={cs.skills} />
             </div>
-            <p className={styles.scoreNote}>
-              Rated by the model itself. Below 0.7 means the field may need manual review.
-            </p>
+            <p className={styles.scoreNote}>{t('confidenceNote')}</p>
           </div>
         </div>
 
         {/* Work experience */}
         {work_experience.length > 0 && (
           <div className={styles.timeline}>
-            <p className={styles.sectionTitle}>Experience</p>
+            <p className={styles.sectionTitle}>{t('experience')}</p>
             {work_experience.map((job, i) => (
               <div key={i} className={styles.job}>
                 <div className={styles.jobMeta}>
@@ -135,7 +135,7 @@ export default function ResultPreview({ result, filename, file, onReset, llmStat
         {/* Personal projects */}
         {result.personal_projects.length > 0 && (
           <div className={styles.projects}>
-            <p className={styles.sectionTitle}>Projects</p>
+            <p className={styles.sectionTitle}>{t('projects')}</p>
             {result.personal_projects.map((proj, i) => (
               <div key={i} className={styles.project}>
                 <div className={styles.projectMeta}>

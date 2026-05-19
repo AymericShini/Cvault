@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { getStreamUrl } from '@/lib/api'
 import type { LlmStats, ParsedCV, ProcessingStep, SSEEvent, StepStatus } from '@/lib/types'
 import styles from './ProcessingPanel.module.css'
@@ -11,24 +12,26 @@ interface Props {
   onError: (msg: string) => void
 }
 
-const STEP_LABELS: Record<string, string> = {
-  extract:  'Extract text from PDF',
-  prompt:   'Build LLM prompt',
-  llm:      'Call Groq API',
-  validate: 'Validate JSON schema',
-  complete: 'Done',
-}
-
-function makeInitialSteps(): ProcessingStep[] {
-  return ['extract', 'prompt', 'llm', 'validate'].map((id) => ({
-    id,
-    label: STEP_LABELS[id],
-    status: 'pending',
-    detail: '',
-  }))
-}
-
 export default function ProcessingPanel({ jobId, filename, onComplete, onError }: Props) {
+  const t = useTranslations('processing')
+
+  const STEP_LABELS: Record<string, string> = {
+    extract:  t('stepExtract'),
+    prompt:   t('stepPrompt'),
+    llm:      t('stepLlm'),
+    validate: t('stepValidate'),
+    complete: t('stepDone'),
+  }
+
+  function makeInitialSteps(): ProcessingStep[] {
+    return ['extract', 'prompt', 'llm', 'validate'].map((id) => ({
+      id,
+      label: STEP_LABELS[id],
+      status: 'pending',
+      detail: '',
+    }))
+  }
+
   const [steps, setSteps] = useState<ProcessingStep[]>(makeInitialSteps)
   const [promptPreview, setPromptPreview] = useState<string | null>(null)
   const [showPrompt, setShowPrompt] = useState(false)
@@ -78,17 +81,17 @@ export default function ProcessingPanel({ jobId, filename, onComplete, onError }
 
     es.onerror = () => {
       es.close()
-      onError('Connection to server lost. Is the backend running?')
+      onError(t('connectionError'))
     }
 
     return () => es.close()
-  }, [jobId, onComplete, onError])
+  }, [jobId, onComplete, onError, t])
 
   return (
     <div className={styles.panel}>
       <div className={styles.header}>
         <span className={styles.filename}>{filename}</span>
-        <span className={styles.live}>live</span>
+        <span className={styles.live}>{t('live')}</span>
       </div>
 
       <div className={styles.steps}>
@@ -114,7 +117,7 @@ export default function ProcessingPanel({ jobId, filename, onComplete, onError }
             className={styles.promptToggle}
             onClick={() => setShowPrompt((v) => !v)}
           >
-            {showPrompt ? '▾' : '▸'} Prompt sent to Groq
+            {showPrompt ? '▾' : '▸'} {t('promptToggle')}
           </button>
           {showPrompt && (
             <pre className={styles.promptBox}>{promptPreview}</pre>

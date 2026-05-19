@@ -1,17 +1,19 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useTranslations, useFormatter } from 'next-intl'
+import { useRouter } from '@/navigation'
 import { getJobs, createJob, deleteJob } from '@/lib/api'
 import type { JobDescription } from '@/lib/types'
 import styles from './page.module.css'
 
 export default function JobsPage() {
+  const t = useTranslations('jobs')
+  const format = useFormatter()
   const router = useRouter()
   const [jobs, setJobs] = useState<JobDescription[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // new-job form state
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [saving, setSaving] = useState(false)
@@ -58,7 +60,7 @@ export default function JobsPage() {
   return (
     <main className={styles.page}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Job Descriptions</h1>
+        <h1 className={styles.title}>{t('title')}</h1>
         <span className={styles.count}>
           {loading ? '—' : `${jobs.length} saved`}
         </span>
@@ -66,18 +68,18 @@ export default function JobsPage() {
 
       {/* ─── Create form ─── */}
       <section className={styles.formSection}>
-        <h2 className={styles.sectionTitle}>Save a new job</h2>
+        <h2 className={styles.sectionTitle}>{t('newJob')}</h2>
         <form onSubmit={handleCreate} className={styles.form}>
           <input
             className={styles.input}
             type="text"
-            placeholder="Job title (e.g. Senior Backend Engineer)"
+            placeholder={t('titlePlaceholder')}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <textarea
             className={styles.textarea}
-            placeholder="Paste the full job description here…"
+            placeholder={t('descPlaceholder')}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={5}
@@ -88,17 +90,17 @@ export default function JobsPage() {
             className={styles.saveBtn}
             disabled={saving || !title.trim() || !description.trim()}
           >
-            {saving ? 'Saving…' : 'Save job'}
+            {saving ? t('saving') : t('save')}
           </button>
         </form>
       </section>
 
       {/* ─── Jobs list ─── */}
-      {loading && <p className={styles.muted}>Loading…</p>}
+      {loading && <p className={styles.muted}>{t('loading')}</p>}
       {error && <p className={styles.error}>{error}</p>}
 
       {!loading && !error && jobs.length === 0 && (
-        <p className={styles.muted}>No saved jobs yet. Add one above.</p>
+        <p className={styles.muted}>{t('empty')}</p>
       )}
 
       {jobs.length > 0 && (
@@ -109,7 +111,7 @@ export default function JobsPage() {
                 <p className={styles.cardTitle}>{job.title}</p>
                 <p className={styles.cardDesc}>{job.description}</p>
                 <p className={styles.cardDate}>
-                  {new Date(job.created_at).toLocaleDateString('en-GB', {
+                  {format.dateTime(new Date(job.created_at), {
                     day: 'numeric', month: 'short', year: 'numeric',
                   })}
                 </p>
@@ -119,13 +121,13 @@ export default function JobsPage() {
                   className={styles.searchBtn}
                   onClick={() => handleSearch(job)}
                 >
-                  Search candidates
+                  {t('searchCandidates')}
                 </button>
                 <button
                   className={styles.deleteBtn}
                   onClick={() => handleDelete(job.id)}
                 >
-                  Delete
+                  {t('delete')}
                 </button>
               </div>
             </div>

@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useState } from "react";
+import { useTranslations } from "next-intl";
 import { uploadCV } from "@/lib/api";
 import type { LlmStats, ParsedCV } from "@/lib/types";
 import DropZone from "@/components/upload/DropZone";
@@ -16,6 +17,7 @@ interface Job {
 }
 
 export default function UploadPage() {
+  const t = useTranslations("upload");
   const [stage, setStage] = useState<Stage>("idle");
   const [job, setJob] = useState<Job | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -64,10 +66,8 @@ export default function UploadPage() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <h1>Upload CV</h1>
-        <p className={styles.sub}>
-          Drop a PDF — watch the AI pipeline parse it in real-time.
-        </p>
+        <h1>{t("title")}</h1>
+        <p className={styles.sub}>{t("subtitle")}</p>
       </header>
 
       <div className={styles.body}>
@@ -76,11 +76,8 @@ export default function UploadPage() {
             <DropZone onFile={handleFile} />
             {error && <div className={styles.errorBanner}>{error}</div>}
             <div className={styles.hint}>
-              <span className={styles.hintLabel}>
-                Phase 1 — Context Engineering
-              </span>
-              Each parse call sends a carefully engineered prompt to Groq. The
-              processing panel below will show you exactly what is sent.
+              <span className={styles.hintLabel}>{t("hintLabel")}</span>
+              {t("hintText")}
             </div>
           </>
         )}

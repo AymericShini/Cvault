@@ -1,9 +1,11 @@
 'use client'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import Sidebar from './Sidebar'
 import styles from './Shell.module.css'
 
 export default function Shell({ children }: { children: React.ReactNode }) {
+  const t = useTranslations('nav')
   const [open, setOpen] = useState(false)
   return (
     <div className={styles.shell}>
@@ -13,7 +15,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         <button
           className={styles.menuBtn}
           onClick={() => setOpen(true)}
-          aria-label="Open navigation"
+          aria-label={t('open')}
         >
           <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
             <rect y="0" width="20" height="2" rx="1" fill="currentColor" />

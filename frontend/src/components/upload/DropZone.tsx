@@ -1,5 +1,6 @@
 'use client'
 import { useCallback, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import styles from './DropZone.module.css'
 
 interface Props {
@@ -8,21 +9,22 @@ interface Props {
 }
 
 export default function DropZone({ onFile, disabled }: Props) {
+  const t = useTranslations('dropzone')
   const [dragOver, setDragOver] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const handle = useCallback((file: File) => {
     setError(null)
     if (!file.name.toLowerCase().endsWith('.pdf')) {
-      setError('Only PDF files are supported in Phase 1.')
+      setError(t('errorPdf'))
       return
     }
     if (file.size > 10 * 1024 * 1024) {
-      setError('File is too large. Maximum size is 10 MB.')
+      setError(t('errorSize'))
       return
     }
     onFile(file)
-  }, [onFile])
+  }, [onFile, t])
 
   const onDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -60,9 +62,9 @@ export default function DropZone({ onFile, disabled }: Props) {
           </svg>
         </div>
         <p className={styles.label}>
-          {dragOver ? 'Drop it' : 'Drop a PDF here'}
+          {dragOver ? t('dragging') : t('label')}
         </p>
-        <p className={styles.sub}>or click to browse — max 10 MB</p>
+        <p className={styles.sub}>{t('sublabel')}</p>
       </label>
       {error && <p className={styles.error}>{error}</p>}
     </div>

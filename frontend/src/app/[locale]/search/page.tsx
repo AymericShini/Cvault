@@ -1,6 +1,7 @@
 'use client'
 import { Suspense, useState } from 'react'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
+import { Link } from '@/navigation'
 import { useSearchParams } from 'next/navigation'
 import { searchCandidates } from '@/lib/api'
 import type { CandidateMatch, SearchRequest } from '@/lib/types'
@@ -9,6 +10,7 @@ import styles from './page.module.css'
 const TOP_N_OPTIONS: Array<SearchRequest['top_n']> = [1, 5, 10]
 
 function SearchContent() {
+  const t = useTranslations('search')
   const searchParams = useSearchParams()
   const [query, setQuery] = useState(searchParams.get('q') ?? '')
   const [topN, setTopN] = useState<SearchRequest['top_n']>(5)
@@ -35,23 +37,21 @@ function SearchContent() {
   return (
     <main className={styles.page}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Candidate Search</h1>
-        <p className={styles.subtitle}>
-          Paste a job description — we embed it and find the most relevant candidates.
-        </p>
+        <h1 className={styles.title}>{t('title')}</h1>
+        <p className={styles.subtitle}>{t('subtitle')}</p>
       </div>
 
       <form onSubmit={handleSearch} className={styles.form}>
         <textarea
           className={styles.textarea}
-          placeholder="e.g. We need a senior Python backend engineer with FastAPI, PostgreSQL, and 5+ years of experience…"
+          placeholder={t('placeholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           rows={6}
         />
         <div className={styles.controls}>
           <div className={styles.topNGroup}>
-            <span className={styles.topNLabel}>Show top</span>
+            <span className={styles.topNLabel}>{t('showTop')}</span>
             {TOP_N_OPTIONS.map((n) => (
               <button
                 key={n}
@@ -68,7 +68,7 @@ function SearchContent() {
             className={styles.submitBtn}
             disabled={loading || !query.trim()}
           >
-            {loading ? 'Searching…' : 'Search'}
+            {loading ? t('searching') : t('search')}
           </button>
         </div>
       </form>
@@ -77,9 +77,9 @@ function SearchContent() {
 
       {results !== null && results.length === 0 && (
         <div className={styles.emptyState}>
-          <p className={styles.emptyTitle}>No candidates found</p>
+          <p className={styles.emptyTitle}>{t('emptyTitle')}</p>
           <p className={styles.emptySub}>
-            Upload CVs from the <Link href="/upload" className={styles.link}>Upload</Link> page first.
+            <Link href="/upload" className={styles.link}>{t('emptyText')}</Link>
           </p>
         </div>
       )}
@@ -101,6 +101,7 @@ function SearchContent() {
 }
 
 function MatchCard({ match, rank }: { match: CandidateMatch; rank: number }) {
+  const t = useTranslations('search')
   const pct = Math.round(match.score * 100)
   return (
     <Link href={`/candidates/${match.candidate_id}`} className={styles.card}>
@@ -114,7 +115,7 @@ function MatchCard({ match, rank }: { match: CandidateMatch; rank: number }) {
       </div>
       <div className={styles.cardScore}>
         <span className={styles.scoreValue}>{pct}%</span>
-        <span className={styles.scoreLabel}>match</span>
+        <span className={styles.scoreLabel}>{t('match')}</span>
         <div className={styles.scoreBar}>
           <div className={styles.scoreFill} style={{ width: `${pct}%` }} />
         </div>

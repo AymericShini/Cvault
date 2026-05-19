@@ -1,23 +1,25 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { getAgentHistory, getAgentRun, getAgentRunUrl } from '@/lib/api'
 import type { AgentEvent, AgentRunListItem } from '@/lib/types'
 import styles from './page.module.css'
 
-const EXAMPLES = [
-  'Find the top 3 candidates for a senior Python backend role',
-  'Search for machine learning engineers and compare the top 2',
-  'Find a frontend developer and draft an outreach email for the best match',
-  'Who has the most experience with TypeScript and React?',
-]
-
 export default function AgentPage() {
+  const t = useTranslations('agent')
   const [task, setTask] = useState('')
   const [steps, setSteps] = useState<AgentEvent[]>([])
   const [running, setRunning] = useState(false)
   const [history, setHistory] = useState<AgentRunListItem[]>([])
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null)
   const traceEndRef = useRef<HTMLDivElement>(null)
+
+  const EXAMPLES = [
+    t('example1'),
+    t('example2'),
+    t('example3'),
+    t('example4'),
+  ]
 
   useEffect(() => {
     getAgentHistory().then(setHistory).catch(() => {})
@@ -99,9 +101,9 @@ export default function AgentPage() {
     <main className={styles.page}>
       {/* ── History sidebar ── */}
       <aside className={styles.historySidebar}>
-        <p className={styles.historyTitle}>History</p>
+        <p className={styles.historyTitle}>{t('history')}</p>
         {history.length === 0 && (
-          <p className={styles.historyEmpty}>No runs yet.</p>
+          <p className={styles.historyEmpty}>{t('noRuns')}</p>
         )}
         <ul className={styles.historyList}>
           {history.map((run) => (
@@ -132,11 +134,8 @@ export default function AgentPage() {
       {/* ── Main column ── */}
       <div className={styles.mainCol}>
         <div className={styles.header}>
-          <h1 className={styles.title}>Agent</h1>
-          <p className={styles.subtitle}>
-            Describe a recruitment task. The agent decides which tools to call, in what order,
-            and reasons its way to a conclusion — you see every step live.
-          </p>
+          <h1 className={styles.title}>{t('title')}</h1>
+          <p className={styles.subtitle}>{t('subtitle')}</p>
         </div>
 
         {/* ── Input ── */}
@@ -158,7 +157,7 @@ export default function AgentPage() {
           <form onSubmit={handleRun}>
             <textarea
               className={styles.textarea}
-              placeholder="e.g. Find the top 2 Python engineers and compare their experience…"
+              placeholder={t('placeholder')}
               value={task}
               onChange={(e) => setTask(e.target.value)}
               rows={4}
@@ -170,7 +169,7 @@ export default function AgentPage() {
                 className={styles.runBtn}
                 disabled={running || !task.trim()}
               >
-                {running ? 'Running…' : 'Run agent'}
+                {running ? t('running') : t('run')}
               </button>
             </div>
           </form>
@@ -178,12 +177,12 @@ export default function AgentPage() {
 
         {/* ── Trace ── */}
         {steps.length === 0 && !running && (
-          <p className={styles.empty}>The agent&apos;s reasoning trace will appear here.</p>
+          <p className={styles.empty}>{t('emptyTrace')}</p>
         )}
 
         {steps.length > 0 && (
           <section className={styles.traceSection}>
-            <p className={styles.traceHeader}>Reasoning trace</p>
+            <p className={styles.traceHeader}>{t('trace')}</p>
             <div className={styles.trace}>
               {steps.map((step, i) => (
                 <StepRow key={i} step={step} />
@@ -198,11 +197,12 @@ export default function AgentPage() {
 }
 
 function StepRow({ step }: { step: AgentEvent }) {
+  const t = useTranslations('agent')
   switch (step.type) {
     case 'thought':
       return (
         <div className={`${styles.step} ${styles.stepThought}`}>
-          <span className={styles.stepLabel}>Thought</span>
+          <span className={styles.stepLabel}>{t('thought')}</span>
           <p className={styles.stepContent}>{step.content}</p>
         </div>
       )
@@ -210,7 +210,7 @@ function StepRow({ step }: { step: AgentEvent }) {
     case 'tool_call':
       return (
         <div className={`${styles.step} ${styles.stepToolCall}`}>
-          <span className={styles.stepLabel}>Tool call</span>
+          <span className={styles.stepLabel}>{t('toolCall')}</span>
           <span className={styles.stepName}>{step.name}</span>
           <pre className={styles.stepMono}>{JSON.stringify(step.args, null, 2)}</pre>
         </div>
@@ -219,7 +219,7 @@ function StepRow({ step }: { step: AgentEvent }) {
     case 'tool_result':
       return (
         <div className={`${styles.step} ${styles.stepToolResult}`}>
-          <span className={styles.stepLabel}>Result — {step.name}</span>
+          <span className={styles.stepLabel}>{t('result', { name: step.name ?? '' })}</span>
           <pre className={styles.stepMono}>{JSON.stringify(step.result, null, 2)}</pre>
         </div>
       )
@@ -228,9 +228,9 @@ function StepRow({ step }: { step: AgentEvent }) {
       return (
         <div className={styles.stepTokens}>
           <span className={styles.stepTokensText}>
-            {step.total_tokens?.toLocaleString()} tokens
+            {step.total_tokens?.toLocaleString()} {t('tokens')}
             <span className={styles.stepTokensBreakdown}>
-              {' '}({step.prompt_tokens?.toLocaleString()} prompt · {step.completion_tokens?.toLocaleString()} completion)
+              {' '}({step.prompt_tokens?.toLocaleString()} · {step.completion_tokens?.toLocaleString()} {t('tokenBreakdown')})
             </span>
           </span>
         </div>
@@ -239,7 +239,7 @@ function StepRow({ step }: { step: AgentEvent }) {
     case 'answer':
       return (
         <div className={`${styles.step} ${styles.stepAnswer}`}>
-          <span className={styles.stepLabel}>Answer</span>
+          <span className={styles.stepLabel}>{t('answer')}</span>
           <p className={styles.answerContent}>{step.content}</p>
         </div>
       )
@@ -247,7 +247,7 @@ function StepRow({ step }: { step: AgentEvent }) {
     case 'error':
       return (
         <div className={`${styles.step} ${styles.stepError}`}>
-          <span className={styles.stepLabel}>Error</span>
+          <span className={styles.stepLabel}>{t('error')}</span>
           <p className={styles.stepContent}>{step.content}</p>
         </div>
       )

@@ -1,23 +1,23 @@
 'use client'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useTranslations, useLocale } from 'next-intl'
+import { Link, usePathname, useRouter } from '@/navigation'
 import styles from './Sidebar.module.css'
 
 interface NavItem {
-  label: string
+  key: 'dashboard' | 'upload' | 'candidates' | 'search' | 'jobs' | 'agent' | 'pipeline'
   href: string
   phase: number
   active: boolean
 }
 
 const NAV: NavItem[] = [
-  { label: 'Dashboard',  href: '/',          phase: 1, active: true  },
-  { label: 'Upload CV',  href: '/upload',    phase: 1, active: true  },
-  { label: 'Candidates', href: '/candidates', phase: 2, active: true  },
-  { label: 'Search',     href: '/search',    phase: 3, active: true  },
-  { label: 'Jobs',       href: '/jobs',      phase: 3, active: true  },
-  { label: 'Agent',      href: '/agent',     phase: 4, active: true  },
-  { label: 'Pipeline',   href: '/pipeline',  phase: 2, active: true  },
+  { key: 'dashboard',  href: '/',          phase: 1, active: true  },
+  { key: 'upload',     href: '/upload',    phase: 1, active: true  },
+  { key: 'candidates', href: '/candidates', phase: 2, active: true  },
+  { key: 'search',     href: '/search',    phase: 3, active: true  },
+  { key: 'jobs',       href: '/jobs',      phase: 3, active: true  },
+  { key: 'agent',      href: '/agent',     phase: 4, active: true  },
+  { key: 'pipeline',   href: '/pipeline',  phase: 2, active: true  },
 ]
 
 interface SidebarProps {
@@ -26,10 +26,18 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const t = useTranslations('nav')
+  const locale = useLocale()
   const pathname = usePathname()
+  const router = useRouter()
+
+  function switchLocale() {
+    router.replace(pathname, { locale: locale === 'en' ? 'fr' : 'en' })
+  }
+
   return (
     <aside className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
-      <button className={styles.closeBtn} onClick={onClose} aria-label="Close navigation">
+      <button className={styles.closeBtn} onClick={onClose} aria-label={t('close')}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
@@ -52,11 +60,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   href={item.href}
                   className={`${styles.item} ${isActive ? styles.current : ''}`}
                 >
-                  {item.label}
+                  {t(item.key)}
                 </Link>
               ) : (
                 <span className={`${styles.item} ${styles.disabled}`}>
-                  {item.label}
+                  {t(item.key)}
                   <span className={styles.badge}>Ph.{item.phase}</span>
                 </span>
               )}
@@ -65,9 +73,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         })}
       </nav>
 
+      <button className={styles.langSwitch} onClick={switchLocale}>
+        {t('switchFlag')} {t('switchLang')}
+      </button>
+
       <div className={styles.footer}>
-        <span className={styles.phase}>Phase 4</span>
-        <span className={styles.footerSub}>Agentic Workflow</span>
+        <span className={styles.phase}>{t('phase')}</span>
+        <span className={styles.footerSub}>{t('phaseLabel')}</span>
       </div>
     </aside>
   )

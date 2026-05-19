@@ -1,0 +1,31 @@
+.page { padding: var(--space-10) var(--space-8); }
+.header { margin-bottom: var(--space-8); }
+.header h1 { font-size: 1.75rem; font-weight: 600; }
+.sub { color: var(--text-secondary); margin-top: var(--space-1); }
+
+.description {
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-width: 620px;
+  margin-bottom: var(--space-10);
+}
+
+.phasesSection { margin-bottom: var(--space-10); }
+.phasesTitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-5);
+}
+.phaseList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-4); }
+.phaseItem { display: flex; gap: var(--space-3); align-items: baseline; }
+.phaseMarker { font-family: var(--font-mono); font-size: 0.75rem; width: 1.2rem; flex-shrink: 0; }
+.done { color: var(--success); }
+.active { color: var(--accent); }
+.phaseName { font-size: 0.9rem; font-weight: 600; }
+.phaseDesc { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+
+.cta { color: var(--accent); font-weight: 500; }
+.cta:hover { color: var(--accent-hover); }

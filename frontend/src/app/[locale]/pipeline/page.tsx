@@ -1,10 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { useTranslations, useFormatter } from 'next-intl'
+import { Link } from '@/navigation'
 import { getCandidates } from '@/lib/api'
 import type { CandidateListItem } from '@/lib/types'
 import styles from './page.module.css'
 
 export default function PipelinePage() {
+  const t = useTranslations('pipeline')
+  const format = useFormatter()
   const [runs, setRuns] = useState<CandidateListItem[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -23,23 +27,23 @@ export default function PipelinePage() {
   return (
     <main className={styles.page}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Ingestion Pipeline</h1>
-        <p className={styles.sub}>One row per CV processed by the LlamaIndex IngestionPipeline.</p>
+        <h1 className={styles.title}>{t('title')}</h1>
+        <p className={styles.sub}>{t('subtitle')}</p>
       </div>
 
       {/* Stats row */}
       {!loading && runs.length > 0 && (
         <div className={styles.stats}>
-          <Stat label="Total runs" value={String(runs.length)} />
-          {avgLatency != null && <Stat label="Avg parse time" value={`${avgLatency} ms`} />}
-          {totalTokens > 0 && <Stat label="Total tokens" value={totalTokens.toLocaleString()} />}
+          <Stat label={t('totalRuns')} value={String(runs.length)} />
+          {avgLatency != null && <Stat label={t('avgParseTime')} value={`${avgLatency} ms`} />}
+          {totalTokens > 0 && <Stat label={t('totalTokens')} value={totalTokens.toLocaleString()} />}
         </div>
       )}
 
-      {loading && <p className={styles.muted}>Loading…</p>}
+      {loading && <p className={styles.muted}>{t('loading')}</p>}
 
       {!loading && runs.length === 0 && (
-        <p className={styles.muted}>No runs yet. Upload a CV to see pipeline activity.</p>
+        <p className={styles.muted}>{t('empty')}</p>
       )}
 
       {runs.length > 0 && (
@@ -47,24 +51,24 @@ export default function PipelinePage() {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Candidate</th>
-                <th>File</th>
-                <th>Ingested at</th>
-                <th>Parse time</th>
-                <th>Tokens</th>
+                <th>{t('colCandidate')}</th>
+                <th>{t('colFile')}</th>
+                <th>{t('colIngestedAt')}</th>
+                <th>{t('colParseTime')}</th>
+                <th>{t('colTokens')}</th>
               </tr>
             </thead>
             <tbody>
               {runs.map((r) => (
                 <tr key={r.id}>
                   <td>
-                    <a href={`/candidates/${r.id}`} className={styles.link}>
+                    <Link href={`/candidates/${r.id}`} className={styles.link}>
                       {r.full_name ?? 'Unknown'}
-                    </a>
+                    </Link>
                   </td>
                   <td className={styles.mono}>{r.filename}</td>
                   <td className={styles.mono}>
-                    {new Date(r.uploaded_at).toLocaleString('en-GB', {
+                    {format.dateTime(new Date(r.uploaded_at), {
                       day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
                     })}
                   </td>
