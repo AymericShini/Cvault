@@ -1,6 +1,5 @@
 'use client'
-export const dynamic = 'force-dynamic'
-import { useState, useEffect } from 'react'
+import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { searchCandidates } from '@/lib/api'
@@ -9,7 +8,7 @@ import styles from './page.module.css'
 
 const TOP_N_OPTIONS: Array<SearchRequest['top_n']> = [1, 5, 10]
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams()
   const [query, setQuery] = useState(searchParams.get('q') ?? '')
   const [topN, setTopN] = useState<SearchRequest['top_n']>(5)
@@ -121,5 +120,13 @@ function MatchCard({ match, rank }: { match: CandidateMatch; rank: number }) {
         </div>
       </div>
     </Link>
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense>
+      <SearchContent />
+    </Suspense>
   )
 }
